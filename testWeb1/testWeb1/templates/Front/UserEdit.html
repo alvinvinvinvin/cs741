@@ -1,0 +1,15 @@
+﻿#parse("Front/Head.html")
+<script type="text/javascript" src="../scripts/ckeditor/ckeditor.js"></script>
+<form action="../../UserEdit.ashx" method="post">
+    <script type="text/javascript">
+    function testContent(obj) {
+        if (document.getElementById(obj).value.length <= 0) {
+            alert('please input terminology name!');
+        }
+    }
+    </script>
+    #if($Model.Action == "AddNew")
+    <input type="text" name="username"/>
+    <input type="text" name="password" />
+</form>
+#parse("Front/Foot.html")

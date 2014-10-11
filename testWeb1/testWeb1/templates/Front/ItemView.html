@@ -1,0 +1,17 @@
+﻿#parse("Front/Head.html")
+<p>#if($Model.UserName == "admin")
+welcome! $Model.Username<br />
+<a href="../../ItemEdit.ashx?Action=Edit&ItemId=$Model.item.ItemId">Edit</a>
+<a href="../../ItemEdit.ashx?Action=Delete&ItemId=$Model.item.ItemId">Delete</a>
+#end
+</p>
+<form>
+    <h1>$Model.item.ItemName</h1>
+    <p>
+        $Model.item.ItemDes
+    </p>
+    <p><img src="$Model.item.ItemImage" height="400" width="400" /></p>
+</form>
+<br />
+<h2><a href="../../MainPage.ashx?username=$Model.Username">Go back to MainPage</a></h2>
+#parse("Front/Foot.html")

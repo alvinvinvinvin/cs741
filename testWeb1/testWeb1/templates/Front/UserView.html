@@ -1,0 +1,22 @@
+﻿#parse("Front/Head.html")
+<div align="center"
+    <p><h3>User List</h3></p>
+</div>
+<p>
+    <a href="../../UserEdit.ashx?Action=AddNew">Add New User</a>
+</p>
+<form action="../../UserView.ashx" method="post">
+    <table>
+        <thead>
+            <tr><td>UserName</td></tr>
+        </thead>
+        <tbody>
+            #foreach($u in $Model.Users)
+            <tr>
+                <td><h2><a href="../../UserEdit.ashx?Id=$u.Id">$u.UserName</a></h2></td>
+            </tr>
+            #end
+        </tbody>
+    </table>
+</form>
+#parse("Front/Foot.html")

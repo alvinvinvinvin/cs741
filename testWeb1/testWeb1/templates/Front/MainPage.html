@@ -1,0 +1,44 @@
+﻿#parse("Front/Head.html")
+    <p> 
+        <h3>
+            Welcom! 
+            #if($Model.Username=="admin")
+            <br />
+            Administrator $Model.Username !
+            <br />
+            <a href="../../ItemEdit.ashx?Action=AddNew">Add New Terminology</a>
+            <a href="../../UserView.ashx">User Management</a>
+            #else
+            <br />
+            User $Model.Username !
+            #end
+        </h3>
+    </p>
+<form action="../../MainPage.ashx" method="post">
+    <input type="hidden" name="username" value="$Model.Username" />
+    <input type="text" name="searchBox" />
+    <input type="submit" name="searchBt" value="search"/>
+    <table>
+        <thead>
+            <tr><td><h3>Terminology Name</h3></td><td><h3>Image</h3></td></tr>
+        </thead>
+        <tbody>
+            #foreach($i in $Model.Items)
+            <tr>
+                <td><h2><a href="../../ItemView.ashx?username=$Model.Username&Id=$i.ItemId">$i.ItemName</a></h2></td>
+                <td><img src="$i.ItemImage" height="150" width="150"/></td>
+            </tr>
+            #nodata
+            <p>
+                <h3>
+                    Sorry, the terminology you queried does not exist.
+                    Please connect administrator:
+                    <a href="mailto:chen.han@uwlax.edu">chen.han@uwlax.edu</a><br />
+                    <a href="../../MainPage.ashx?username=$Model.Username">Go back</a>
+                </h3> 
+            </p>
+            #end
+        </tbody>
+    </table>
+</form>
+#parse("Front/Foot.html")
