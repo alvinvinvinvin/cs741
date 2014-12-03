@@ -1,20 +1,22 @@
 ﻿#parse("Front/Head.html")
-    <p> 
+<div align="center">
+    <p>
         <h3>
-            Welcom! 
+            Welcome!
             #if($Model.Username=="admin")
             <br />
             Administrator $Model.Username !
             <br />
-            <a href="../../ItemEdit.ashx?Action=AddNew">Add New Terminology</a>
-            <a href="../../UserView.ashx">User Management</a>
+            <a href="../../MainPage.ashx?Action=AddNew">Add New Terminology</a>
+            <!--<a href="../../UserView.ashx">User Management</a>-->
             #else
             <br />
             User $Model.Username !
             #end
         </h3>
     </p>
-<form action="../../MainPage.ashx" method="post">
+</div>
+<form action="../../MainPage.ashx" method="post" style="align-content:center">
     <input type="hidden" name="username" value="$Model.Username" />
     <input type="text" name="searchBox" />
     <input type="submit" name="searchBt" value="search"/>
@@ -25,7 +27,7 @@
         <tbody>
             #foreach($i in $Model.Items)
             <tr>
-                <td><h2><a href="../../ItemView.ashx?username=$Model.Username&Id=$i.ItemId">$i.ItemName</a></h2></td>
+                <td><h2><a href="../../ItemView.ashx?username=$Model.Username&ItemId=$i.ItemId">$i.ItemName</a></h2></td>
                 <td><img src="$i.ItemImage" height="150" width="150"/></td>
             </tr>
             #nodata

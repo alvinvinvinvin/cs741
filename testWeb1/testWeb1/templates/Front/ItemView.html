@@ -1,11 +1,13 @@
 ﻿#parse("Front/Head.html")
-<p>#if($Model.UserName == "admin")
-welcome! $Model.Username<br />
-<a href="../../ItemEdit.ashx?Action=Edit&ItemId=$Model.item.ItemId">Edit</a>
-<a href="../../ItemEdit.ashx?Action=Delete&ItemId=$Model.item.ItemId">Delete</a>
-#end
-</p>
-<form>
+<div align="center">
+    <p>#if($Model.UserName == "admin")
+    welcome! $Model.Username<br />
+    <a href="../../ItemView.ashx?Action=Edit&ItemId=$Model.item.ItemId">Edit</a>
+    <a href="../../ItemView.ashx?Action=Delete&ItemId=$Model.item.ItemId">Delete</a>
+    #end
+    </p>
+</div>
+<form style="align-content:center">
     <h1>$Model.item.ItemName</h1>
     <p>
         $Model.item.ItemDes

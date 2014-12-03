@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using System.Web.Security;
 
 namespace testWeb1
 {
@@ -21,10 +22,12 @@ namespace testWeb1
             {
                 string username = context.Request["UserName"];
                 string password = context.Request["Password"];
+                //Encrypt password for querying from database.
+                string encryptedPwd = FormsAuthentication.HashPasswordForStoringInConfigFile(password,"MD5");
                 int count = (int)SqlHelper.ExecuteScalar(
                     "select count(*) from T_User where UserName=@UserName and Password=@Password", 
                     new SqlParameter("@UserName", username)
-                    , new SqlParameter("@Password", password));
+                    , new SqlParameter("@Password", encryptedPwd));
                 if (count == 1)
                 {
                     //Login successful;

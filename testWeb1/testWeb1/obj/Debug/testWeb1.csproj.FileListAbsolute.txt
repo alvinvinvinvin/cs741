@@ -9,6 +9,6 @@ D:\study\Cproject\testWeb\cs741\testWeb1\testWeb1\bin\testWeb1.dll.config
 D:\study\Cproject\testWeb\cs741\testWeb1\testWeb1\bin\testWeb1.dll
 D:\study\Cproject\testWeb\cs741\testWeb1\testWeb1\bin\testWeb1.pdb
 D:\study\Cproject\testWeb\cs741\testWeb1\testWeb1\bin\NVelocity.dll
-D:\study\Cproject\testWeb\cs741\testWeb1\testWeb1\obj\Debug\testWeb1.csprojResolveAssemblyReference.cache
 D:\study\Cproject\testWeb\cs741\testWeb1\testWeb1\obj\Debug\testWeb1.dll
 D:\study\Cproject\testWeb\cs741\testWeb1\testWeb1\obj\Debug\testWeb1.pdb
+D:\study\Cproject\testWeb\cs741\testWeb1\testWeb1\obj\Debug\testWeb1.csprojResolveAssemblyReference.cache

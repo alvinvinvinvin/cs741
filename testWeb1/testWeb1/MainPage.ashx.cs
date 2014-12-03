@@ -20,31 +20,40 @@ namespace testWeb1
             string search = context.Request["searchBt"];
             string keyword = context.Request["searchBox"];
             string username = context.Request["username"];
-            if (string.IsNullOrEmpty(search))
+            string action = context.Request["Action"];
+            if (action == "AddNew")
             {
-                DataTable dtItems = SqlHelper.ExecuteDataTable(
-                           "select * from T_Item");
-                var data = new { Username = username, Items = dtItems.Rows };
-                string MainPageHtml = CommonHelper.RenderHtml("Front/MainPage.html", data);
-                context.Response.Write(MainPageHtml);
+                string addNewhtml = CommonHelper.RenderHtml("Front/ItemEdit.html", null);//Generate a null itemEdit page for adding new item.
+                context.Response.Write(addNewhtml);//Generate corresponding page.
             }
             else
             {
-                DataTable dtItems = SqlHelper.ExecuteDataTable(
-                           "select * from T_Item where ItemName=@ItemName",
-                           new SqlParameter("@ItemName", keyword));
-                if (dtItems.Rows.Count > 0)
+                if (string.IsNullOrEmpty(search))
                 {
+                    DataTable dtItems = SqlHelper.ExecuteDataTable(
+                               "select * from T_Item");
                     var data = new { Username = username, Items = dtItems.Rows };
                     string MainPageHtml = CommonHelper.RenderHtml("Front/MainPage.html", data);
                     context.Response.Write(MainPageHtml);
                 }
                 else
                 {
-                    var data = new { Username = username, Items = ""};
-                    string MainPageHtml = CommonHelper.RenderHtml("Front/MainPage.html", data);
-                    context.Response.Write(MainPageHtml);
-                }
+                    DataTable dtItems = SqlHelper.ExecuteDataTable(
+                               "select * from T_Item where ItemName like @ItemName",
+                               new SqlParameter("@ItemName", "%" + keyword + "%"));
+                    if (dtItems.Rows.Count > 0)
+                    {
+                        var data = new { Username = username, Items = dtItems.Rows };
+                        string MainPageHtml = CommonHelper.RenderHtml("Front/MainPage.html", data);
+                        context.Response.Write(MainPageHtml);
+                    }
+                    else
+                    {
+                        var data = new { Username = username, Items = "" };
+                        string MainPageHtml = CommonHelper.RenderHtml("Front/MainPage.html", data);
+                        context.Response.Write(MainPageHtml);
+                    }
+                } 
             }
             
         }

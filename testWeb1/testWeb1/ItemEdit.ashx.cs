@@ -15,49 +15,21 @@ namespace testWeb1
     public class ItemEdit : IHttpHandler
     {
         string Category = "";
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
         public void ProcessRequest(HttpContext context)
         {
             ItemDAL itemDAL = new ItemDAL();
             context.Response.ContentType = "text/html";
             string itemId = context.Request["ItemId"];
-            long itemid = Convert.ToInt64(itemId);
-            string action = context.Request["Action"];
-            if (action == "AddNew")
-            {
-                string addNewhtml = CommonHelper.RenderHtml("Front/ItemEdit.html", null);
-                context.Response.Write(addNewhtml);
-            }
-            else if (action == "Edit")
-            {
-                
-                Item item = itemDAL.getById(itemid);
-                var data = 
-                    new 
-                    { 
-                        ItemId = itemId, 
-                        ItemName = item.ItemName, 
-                        ItemImage = item.ItemImage,
-                        ItemDes = item.ItemDes,
-                        Action = "Edit"
-                    };
-                string editHtml = CommonHelper.RenderHtml("Front/ItemEdit.html",data);
-                context.Response.Write(editHtml);
-            }
-            else if (action == "Delete")
-            {
-                var data = new 
-                {
-                    Action = "Delete",
-                    ItemId = itemid
-                };
-                string deleteHtml = CommonHelper.RenderHtml("Front/ItemEdit.html",data);
-                context.Response.Write(deleteHtml);
-
-            }
-            string save = context.Request["save2"];
-            string edit = context.Request["save1"];
-            string delete = context.Request["Delete"];
+            long itemid = Convert.ToInt64(itemId);//Get item ID from front page.
+            string save = context.Request["btnSave"];
+            string edit = context.Request["btnEdit"];
+            string delete = context.Request["btnDelete"];
             string IsPostBack = context.Request["IsPostBack"];
+            //add new
             if (!string.IsNullOrEmpty(save))
             {
                 string itemName = context.Request["ItemName2"];
@@ -84,7 +56,7 @@ namespace testWeb1
                             };
                         itemDAL.AddNew(item);
                         context.Response.Write(
-                        "<meta http-equiv= \"refresh\" content= \"2;url=MainPage.ashx?username=admin\"><h2>Successfully Added!<h2>");
+                        "<meta http-equiv= \"refresh\" content= \"2;url=MainPage.ashx?username=admin\"><h2>Successfully Added!</h2>");
                     }
                     else
                     {
@@ -103,51 +75,83 @@ namespace testWeb1
                         + prevPage + "\"><h2>Name cannot be null</h2>");
                 }
             }
-
+            //If user clicked "save" button under editing situation.
             if (!string.IsNullOrEmpty(edit))
             {
                 string itemName = context.Request["ItemName1"];
                 string itemDes = context.Request["Msg1"];
                 HttpPostedFile itemImage = context.Request.Files["ItemImage1"];
-                string itemCategory = Category;
-                if (CommonHelper.HasFile(itemImage))
+                if (!string.IsNullOrEmpty(itemName))
                 {
-                    string imageName =
-                       itemName + DateTime.Now.ToString("yyyyMMddHHmmssfffffff") + Path.GetExtension(itemImage.FileName);
-                    string imagePath = "\\uploadfile\\image\\" + imageName;
-                    itemImage.SaveAs(context.Server.MapPath(imagePath));
-
-                    
-                    Item item =
-                        new Item
+                    if (itemDAL.CheckingExisting(itemName))
+                    {
+                        string prevPage = context.Request.UrlReferrer.ToString();
+                        context.Response.Write(
+                            "<meta http-equiv= \"refresh\" content= \"2;url="
+                            + prevPage + "\"><h2>Terminology name exits, please try others or click cancel.</h2>");
+                    }
+                    else 
+                    {  
+                        string itemCategory = Category;
+                        if (CommonHelper.HasFile(itemImage))
                         {
-                            ItemId = itemid,
-                            ItemName = itemName,
-                            ItemDes = itemDes,
-                            ItemImage = imagePath,
-                            ItemCateg = itemCategory
-                        };
-                    itemDAL.Update(item);
+                            string imageName =
+                               itemName + DateTime.Now.ToString("yyyyMMddHHmmssfffffff") + Path.GetExtension(itemImage.FileName);
+                            string imagePath = "\\uploadfile\\image\\" + imageName;
+                            itemImage.SaveAs(context.Server.MapPath(imagePath));
+
+                            Item item =
+                                new Item
+                                {
+                                    ItemId = itemid,
+                                    ItemName = itemName,
+                                    ItemDes = itemDes,
+                                    ItemImage = imagePath,
+                                    ItemCateg = itemCategory
+                                };
+                            itemDAL.Update(item);
+                            string path = context.Request["ItemImage4"];//Get image relative path.
+                            string oldImagePath = context.Server.MapPath(path);//Get image absolute path.
+                            if (System.IO.File.Exists(oldImagePath))
+                            {
+                                System.IO.File.Delete(oldImagePath);//Delete image file from server.
+                            }
+                        }
+                        else
+                        {
+                            Item item =
+                                new Item
+                                {
+                                    ItemId = itemid,
+                                    ItemName = itemName,
+                                    ItemDes = itemDes,
+                                    ItemCateg = itemCategory
+                                };
+                            itemDAL.UpdateWithoutImage(item);
+                        }
+                        context.Response.Write(
+                                 "<meta http-equiv= \"refresh\" content= \"2;url=MainPage.ashx?username=admin\"><h2>Successfully Edited!</h2>");
+                    }
                 }
                 else
                 {
-                    Item item =
-                        new Item
-                        {
-                            ItemId = itemid,
-                            ItemName = itemName,
-                            ItemDes = itemDes,
-                            ItemCateg = itemCategory
-                        };
-                    itemDAL.UpdateWithoutImage(item);
+                    string prevPage = context.Request.UrlReferrer.ToString();
+                    context.Response.Write(
+                        "<meta http-equiv= \"refresh\" content= \"2;url="
+                        + prevPage + "\"><h2>Name cannot be null</h2>");
                 }
-                context.Response.Write(
-                "<meta http-equiv= \"refresh\" content= \"2;url=MainPage.ashx?username=admin\"><h3>Successfully Edited</h3>");
+
             }
 
             if (!string.IsNullOrEmpty(delete))
             {
-                itemDAL.DeleteById(itemid);
+                itemDAL.DeleteById(itemid);//Delete item from database.
+                string path = context.Request["ItemImage3"];//Get image relative path.
+                string imagePath = context.Server.MapPath(path);//Get image absolute path.
+                if (System.IO.File.Exists(imagePath))
+                {
+                    System.IO.File.Delete(imagePath);//Delete image file from server.
+                }
                 context.Response.Write(
                     "<meta http-equiv= \"refresh\" content= \"2;url=MainPage.ashx?username=admin\"><h3>Successfully Deleted</h3>");
             }

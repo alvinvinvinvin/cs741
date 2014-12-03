@@ -1,7 +1,7 @@
 ﻿#parse("Front/Head.html")
 <script type="text/javascript" src="../scripts/ckeditor/ckeditor.js"></script>
 
-<form method="post" action="../../ItemEdit.ashx" enctype="multipart/form-data">
+<form method="post" action="../../ItemEdit.ashx" enctype="multipart/form-data" style="align-content:center">
 
     <script type="text/javascript">
     function testContent(obj) {
@@ -16,31 +16,35 @@
 
             #if($Model.Action=="Edit")
             <input type="hidden" name="ItemId" value="$Model.ItemId" />
+            <input type="hidden" name="ItemImage4" value="$Model.ItemImage"/>
             <p>Name:<input type="text" id="name1" name="ItemName1" value="$Model.ItemName" onblur="testContent('name1')"  /></p>
             <p>Description:<textarea rows="20" cols="30" id="Msg1" name="Msg1">$Model.ItemDes</textarea></p>
             <p>
                 Image:<input type="file" name="ItemImage1" />
                 <img src="$Model.ItemImage" width="200" height="200" />
             </p>
-            <p><input type="submit" name="save1" value="save edition" /></p>
+            <p><input type="submit" name="btnEdit" value="save editing" /></p>
+            <h2><a href="../../ItemView.ashx?username=admin&ItemId=$Model.ItemId">Cancel</a></h2>
+
 
             #elseif($Model.Action=="Delete")
             <input type="hidden" name="ItemId" value="$Model.ItemId" />
+            <input type="hidden" name="ItemImage3" value="$Model.ItemImage"/>
             <p><h1>Are you sure you want to delete this one?</h1></p> 
-            <p><input type="submit" name="Delete" value="Delete" /></p>
-            
+            <p><input type="submit" name="btnDelete" value="Delete" /></p>
+            <h2><a href="../../ItemView.ashx?username=admin&ItemId=$Model.ItemId">Cancel</a></h2>
             
             #else
             <p>Name:<input type="text" id="name2" name="ItemName2" onblur="testContent('name2')"/></p>
-            <p>Decription:<textarea rows="20" cols="30" id="Msg2" name="Msg2"></textarea></p>
+            <p>Description:<textarea rows="20" cols="30" id="Msg2" name="Msg2"></textarea></p>
             <p>
                 Image:<input type="file" name="ItemImage2" />
             </p>
-            <p><input type="submit" name="save2" value="save adding" /></p>
-
+            <p><input type="submit" name="btnSave" value="save adding" /></p>
+            
             #end
         
 </form>
 <br />
-<h2><a href="../../MainPage.ashx?username=admin">Cancel</a></h2>
+<h2><a href="../../MainPage.ashx?username=admin">Go back to MainPage</a></h2>
 #parse("Front/Foot.html")
