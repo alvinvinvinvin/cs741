@@ -83,15 +83,15 @@ namespace testWeb1
                 HttpPostedFile itemImage = context.Request.Files["ItemImage1"];
                 if (!string.IsNullOrEmpty(itemName))
                 {
-                    if (itemDAL.CheckingExisting(itemName))
-                    {
-                        string prevPage = context.Request.UrlReferrer.ToString();
-                        context.Response.Write(
-                            "<meta http-equiv= \"refresh\" content= \"2;url="
-                            + prevPage + "\"><h2>Terminology name exits, please try others or click cancel.</h2>");
-                    }
-                    else 
-                    {  
+                    //if (itemDAL.CheckingExisting(itemName))
+                    //{
+                    //    string prevPage = context.Request.UrlReferrer.ToString();
+                    //    context.Response.Write(
+                    //        "<meta http-equiv= \"refresh\" content= \"2;url="
+                    //        + prevPage + "\"><h2>Terminology name exits, please try others or click cancel.</h2>");
+                    //}
+                    //else 
+                    //{  
                         string itemCategory = Category;
                         if (CommonHelper.HasFile(itemImage))
                         {
@@ -131,7 +131,7 @@ namespace testWeb1
                         }
                         context.Response.Write(
                                  "<meta http-equiv= \"refresh\" content= \"2;url=MainPage.ashx?username=admin\"><h2>Successfully Edited!</h2>");
-                    }
+                    
                 }
                 else
                 {

@@ -17,7 +17,8 @@
             #if($Model.Action=="Edit")
             <input type="hidden" name="ItemId" value="$Model.ItemId" />
             <input type="hidden" name="ItemImage4" value="$Model.ItemImage"/>
-            <p>Name:<input type="text" id="name1" name="ItemName1" value="$Model.ItemName" onblur="testContent('name1')"  /></p>
+            <p>Name: <h4>$Model.ItemName</h4><!--<input type="text" id="name1" name="ItemName1" value="$Model.ItemName" onblur="testContent('name1')"  />--></p>
+            <input type="hidden" name="ItemName1" value="$Model.ItemName" />
             <p>Description:<textarea rows="20" cols="30" id="Msg1" name="Msg1">$Model.ItemDes</textarea></p>
             <p>
                 Image:<input type="file" name="ItemImage1" />
